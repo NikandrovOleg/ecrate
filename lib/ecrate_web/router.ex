@@ -18,6 +18,9 @@ defmodule EcrateWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/up/", UpController, :index
+    get "/up/databases", UpController, :databases
+
     resources "/products", ProductController
   end
 

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
+cp -r /public/. /app/priv/static/
+
+exec "$@"
