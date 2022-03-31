@@ -7,6 +7,7 @@ WORKDIR /app
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends build-essential curl inotify-tools \
+  && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
   && apt-get clean \
   && useradd --create-home elixir \
   && mkdir -p /mix && chown elixir:elixir -R /mix /app
@@ -47,6 +48,7 @@ WORKDIR /app
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends curl \
+  && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
   && apt-get clean \
   && useradd --create-home elixir \
   && chown elixir:elixir -R /app

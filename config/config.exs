@@ -12,8 +12,12 @@ config :ecrate,
 
 # Configures the endpoint
 config :ecrate, EcrateWeb.Endpoint,
-  url: [host: "localhost"],
-  render_errors: [view: EcrateWeb.ErrorView, accepts: ~w(html json), layout: false],
+  http: [ip: {0, 0, 0, 0, 0, 0, 0, 0}],
+  render_errors: [
+    view: EcrateWeb.ErrorView,
+    accepts: ~w(html json),
+    layout: false
+  ],
   pubsub_server: Ecrate.PubSub,
   live_view: [signing_salt: "YoxDy1DF"]
 
@@ -49,4 +53,4 @@ config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{config_env()}.exs"
+import_config "#{Mix.env()}.exs"
