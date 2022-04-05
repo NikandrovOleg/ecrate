@@ -21,16 +21,12 @@ config :ecrate, EcrateWeb.Endpoint,
   pubsub_server: Ecrate.PubSub,
   live_view: [signing_salt: "YoxDy1DF"]
 
-# Configures the mailer
-#
-# By default it uses the "Local" adapter which stores the emails
-# locally. You can see the emails in your browser, at "/dev/mailbox".
-#
-# For production it's recommended to configure a different adapter
-# at the `config/runtime.exs`.
 config :ecrate, Ecrate.Mailer, adapter: Swoosh.Adapters.Local
 
-# Swoosh API client is needed for adapters other than SMTP.
+config :logger, :console,
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:request_id]
+
 config :swoosh, :api_client, false
 
 # Configure esbuild (the version is required)
@@ -43,10 +39,7 @@ config :esbuild,
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
-# Configures Elixir's Logger
-config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
+
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
