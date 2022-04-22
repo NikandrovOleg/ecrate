@@ -51,7 +51,7 @@ defmodule EcrateWeb.Router do
   # Note that preview only shows emails that were sent by the same
   # node running the Phoenix server.
   if Mix.env() == :dev do
-    scope "/dev" do
+    scope "/" do
       pipe_through :browser
 
       forward "/mailbox", Plug.Swoosh.MailboxPreview

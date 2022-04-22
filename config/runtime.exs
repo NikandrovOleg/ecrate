@@ -24,4 +24,5 @@ config :ecrate, Ecrate.Repo,
   database: database,
   hostname: System.get_env("POSTGRES_HOST", "postgres"),
   port: String.to_integer(System.get_env("POSTGRES_PORT", "5432")),
-  pool_size: String.to_integer(System.get_env("POSTGRES_POOL", "15"))
+  pool_size: String.to_integer(System.get_env("POSTGRES_POOL", "15")),
+  show_sensitive_data_on_connection_error: true

@@ -1,5 +1,22 @@
+x-app: &default-app
+  build:
+    context: "."
+    target: "${MIX_ENV:-prod}"
+    args:
+      - "MIX_ENV=${MIX_ENV:-prod}"
+  depends_on:
+    - postgres
+  env_file:
+    - ".env"
+  restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
+  stop_grace_period: "3s"
+  tty: true
+  volumes:
+    - "${DOCKER_WEB_VOLUME:-./priv/static:/app/priv/static}"
+
 services:
   postgres:
+    # container_name: database
     deploy:
       resources:
         limits:
@@ -8,20 +25,17 @@ services:
     env_file:
       - .env
     image: "postgres:14.2-alpine"
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
     restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
     stop_grace_period: "3s"
     tty: true
     volumes:
-      - "${DOCKER_WEB_VOLUME:-./priv/static:/app/priv/static}"
+      - ./postgres-data:/var/lib/postgresql/data
 
   web:
-    build:
-      context: "."
-      target: "${MIX_ENV:-prod}"
-      args:
-        - "MIX_ENV=${MIX_ENV:-prod}"
-    depends_on:
-      - "postgres"
+    <<: *default-app
+    # container_name: app
     deploy:
       resources:
         limits:
@@ -40,5 +54,6 @@ services:
     restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
     stop_grace_period: "3s"
     tty: true
-    volumes:
-      - "${DOCKER_WEB_VOLUME:-./priv/static:/app/priv/static}"
+
+# volumes:
+#   postgres: {}

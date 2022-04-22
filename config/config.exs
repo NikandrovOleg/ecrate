@@ -3,14 +3,11 @@
 #
 # This configuration file is loaded before any dependency and
 # is restricted to this project.
-
-# General application configuration
 import Config
 
 config :ecrate,
   ecto_repos: [Ecrate.Repo]
 
-# Configures the endpoint
 config :ecrate, EcrateWeb.Endpoint,
   http: [ip: {0, 0, 0, 0, 0, 0, 0, 0}],
   render_errors: [
@@ -21,15 +18,18 @@ config :ecrate, EcrateWeb.Endpoint,
   pubsub_server: Ecrate.PubSub,
   live_view: [signing_salt: "YoxDy1DF"]
 
-config :ecrate, Ecrate.Mailer, adapter: Swoosh.Adapters.Local
+config :hello, Ecrate.Repo, adapter: Ecto.Adapters.Postgres
 
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :phoenix, :json_library, Jason
+
+config :ecrate, Ecrate.Mailer, adapter: Swoosh.Adapters.Local
+
 config :swoosh, :api_client, false
 
-# Configure esbuild (the version is required)
 config :esbuild,
   version: "0.14.0",
   default: [
@@ -39,11 +39,4 @@ config :esbuild,
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
-
-
-# Use Jason for JSON parsing in Phoenix
-config :phoenix, :json_library, Jason
-
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

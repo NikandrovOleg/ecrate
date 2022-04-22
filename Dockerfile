@@ -3,7 +3,7 @@
 
 FROM elixir:1.13.3-slim AS dev
 
-WORKDIR /app
+WORKDIR /app/
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends build-essential curl inotify-tools \
@@ -16,8 +16,10 @@ USER elixir
 
 RUN mix local.hex --force && mix local.rebar --force
 
-ARG MIX_ENV="prod"
+ARG MIX_ENV="prod" \
+    CREATE_DATABASE="true"
 ENV MIX_ENV="${MIX_ENV}" \
+    CREATE_DATABASE="${CREATE_DATABASE}" \
     USER="elixir"
 
 COPY --chown=elixir:elixir mix.* ./
@@ -44,11 +46,10 @@ CMD ["iex", "-S", "mix", "phx.server"]
 
 FROM elixir:1.13.3-slim AS prod
 
-WORKDIR /app
+WORKDIR /app/
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends curl \
-  && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
+  && apt-get install -y --no-install-recommends curl postgresql-client \
   && apt-get clean \
   && useradd --create-home elixir \
   && chown elixir:elixir -R /app
