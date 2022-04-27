@@ -1,0 +1,5 @@
+.git/
+# priv/static/
+
+.dockerignore
+.env*
